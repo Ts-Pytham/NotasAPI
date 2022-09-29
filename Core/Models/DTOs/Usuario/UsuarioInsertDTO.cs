@@ -1,4 +1,4 @@
-﻿namespace NotasAPI.Core.DTOs;
+﻿namespace NotasAPI.Core.Models.DTOs.Usuario;
 
 public class UsuarioInsertDTO
 {
@@ -12,6 +12,6 @@ public class UsuarioInsertDTO
     public string Contraseña { get; set; }
 
     [Required]
-    public string Código { get; set; }
+    public int Codigo { get; set; }
 
 }

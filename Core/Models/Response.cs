@@ -1,4 +1,4 @@
-﻿namespace NotasAPI.Core.Helpers;
+﻿namespace NotasAPI.Core.Models;
 
 public class Response<T>
 {

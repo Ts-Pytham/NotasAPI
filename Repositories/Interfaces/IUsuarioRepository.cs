@@ -2,5 +2,7 @@
 
 public interface IUsuarioRepository : IRepository<Usuario>
 {
-    Task CreateUsuarioAsync(UsuarioInsertDTO usuario);
+    Task<UsuarioDTO> CreateUsuarioAsync(UsuarioInsertDTO usuarioDTO);
+
+    Task<UsuarioDTO> LoginUsuarioAsync(UsuarioLoginDTO usuarioDTO);
 }
