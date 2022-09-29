@@ -15,3 +15,4 @@ global using NotasAPI.Repositories;
 global using NotasAPI.Core.Interfaces;
 global using System.Linq.Expressions;
 global using Microsoft.AspNetCore.Mvc;
+global using NotasAPI.Core.Business;
