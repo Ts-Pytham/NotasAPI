@@ -21,10 +21,16 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 
         var existsUser = await Context.Set<Usuario>()
                                           .Include(x => x.IdRolNavigation)
-                                          .Where(x => usuarioDTO.Password.VerifyHashPasswordBCrypt(x.Contraseña) && x.Correo == usuarioDTO.Name || x.Codigo == usuarioDTO.Name.ToInt32())
+                                          .Where(x => x.Correo == usuarioDTO.Name || x.Codigo == usuarioDTO.Name.ToInt32())
                                           .FirstOrDefaultAsync();
 
-        
-        return existsUser?.MapToUsuarioWithRolDTO();
+
+        if (existsUser is null)
+            return null;
+
+        if (!usuarioDTO.Password.VerifyHashPasswordBCrypt(existsUser.Contraseña))
+            return null;
+
+        return existsUser.MapToUsuarioWithRolDTO();
     }
 }

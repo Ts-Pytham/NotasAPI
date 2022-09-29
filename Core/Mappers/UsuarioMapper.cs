@@ -8,6 +8,7 @@ public static class UsuarioMapper
         {
             Codigo = usuarioDTO.Codigo,
             Nombre = usuarioDTO.Nombre,
+            Correo = usuarioDTO.Correo,
             IdRol = 1,
             Contraseña = usuarioDTO.Contraseña.HashPasswordBCrypt()
         };
