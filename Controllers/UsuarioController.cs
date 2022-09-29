@@ -11,7 +11,7 @@ public class UsuarioController : ControllerBase
 		_usuarioBusiness = usuarioBusiness;
 	}
 
-	[HttpPost]
+	[HttpPost("register")]
 	public async Task<ActionResult<Response<UsuarioDTO>>> Register(UsuarioInsertDTO usuario)
 	{
 		var result = await _usuarioBusiness.Register(usuario);
@@ -24,7 +24,7 @@ public class UsuarioController : ControllerBase
 		return BadRequest(result);
 	}
 
-    [HttpPost]
+    [HttpPost("login")]
     public async Task<ActionResult<Response<UsuarioDTO>>> Login(UsuarioLoginDTO usuario)
     {
         var result = await _usuarioBusiness.Login(usuario);
