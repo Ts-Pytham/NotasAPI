@@ -19,8 +19,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     public async virtual Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate)
         => await _entities.Where(predicate).FirstOrDefaultAsync();
 
+    public async virtual Task<IEnumerable<TEntity>> GetEntitiesAsync(Expression<Func<TEntity, bool>> predicate)
+        => await _entities.Where(predicate).ToListAsync();
+
     public async virtual Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
         => await _entities.Where(predicate).AnyAsync();
+
     public virtual Task InsertRangeAsync(IEnumerable<TEntity> entity)
         => _entities.AddRangeAsync(entity);
 

@@ -5,7 +5,7 @@ public class UsuarioInsertDTO
     [Required]
     public string Nombre { get; set; }
 
-    [Required]
+    [Required, EmailAddress]
     public string Correo { get; set; }
 
     [Required]

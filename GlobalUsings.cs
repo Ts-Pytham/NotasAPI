@@ -16,3 +16,4 @@ global using NotasAPI.Core.Interfaces;
 global using System.Linq.Expressions;
 global using Microsoft.AspNetCore.Mvc;
 global using NotasAPI.Core.Business;
+global using NotasAPI.Core.Models.DTOs.Recordatorio;
