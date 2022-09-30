@@ -8,6 +8,11 @@
 
         public async Task<RecordatorioInsertDTO> CreateRecordatorioAsync(int idUsuario, RecordatorioInsertDTO insertDTO)
         {
+            var existsUser = await Context.Set<Usuario>().Where(x => x.Id == idUsuario).AnyAsync();
+
+            if (!existsUser)
+                return null;
+
             var recordatorio = insertDTO.MapToRecordatorio(idUsuario);
 
             await Context.AddAsync(recordatorio);

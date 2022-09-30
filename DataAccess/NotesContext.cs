@@ -108,6 +108,12 @@ public partial class NotesContext : DbContext
             entity.Property(e => e.Titulo)
                 .IsRequired()
                 .HasMaxLength(255);
+
+            entity.HasOne(d => d.IdUsuarioNavigation)
+                .WithMany(p => p.Recordatorios)
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_IdUsuario");
         });
 
         modelBuilder.Entity<Rol>(entity =>

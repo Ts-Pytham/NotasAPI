@@ -6,6 +6,7 @@ public partial class Usuario : Entity
     {
         GrupoConUsuarios = new HashSet<GrupoConUsuario>();
         Grupos = new HashSet<Grupo>();
+        Recordatorios = new HashSet<Recordatorio>();
     }
 
     public string Nombre { get; set; }
@@ -21,4 +22,5 @@ public partial class Usuario
     public virtual Rol IdRolNavigation { get; set; }
     public virtual ICollection<GrupoConUsuario> GrupoConUsuarios { get; set; }
     public virtual ICollection<Grupo> Grupos { get; set; }
+    public virtual ICollection<Recordatorio> Recordatorios { get; set; }
 }

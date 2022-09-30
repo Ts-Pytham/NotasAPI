@@ -1,4 +1,6 @@
-﻿namespace NotasAPI.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace NotasAPI.Entities;
 
 public partial class Recordatorio : Entity
 {
@@ -18,5 +20,5 @@ public partial class Recordatorio : Entity
 public partial class Recordatorio
 {
     public virtual ICollection<GrupoConRecordatorio> GrupoConRecordatorios { get; set; }
-    public virtual Usuario UsuarioNavigation { get; set; }
+    public virtual Usuario IdUsuarioNavigation { get; set; }
 }

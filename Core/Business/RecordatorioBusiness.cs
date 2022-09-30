@@ -4,9 +4,16 @@
     {
         private readonly IRecordatorioRepository _recordatorioRepository;
 
+        public RecordatorioBusiness(IRecordatorioRepository recordatorioRepository)
+        {
+            _recordatorioRepository = recordatorioRepository;
+        }
+
         public async Task<Response<RecordatorioInsertDTO>> CreateRecordatorio(int idUsuario, RecordatorioInsertDTO insertDTO)
         {
-            if(await _recordatorioRepository.GetAsync(x => x.IdUsuario == idUsuario) is null)
+            var result  = await _recordatorioRepository.CreateRecordatorioAsync(idUsuario, insertDTO);
+
+            if (result is null)
             {
                 var errors = new string[]
                 {
@@ -15,8 +22,6 @@
                 };
                 return new Response<RecordatorioInsertDTO>(null, false, errors, ResponseMessage.NotFound);
             }
-
-            await _recordatorioRepository.CreateRecordatorioAsync(idUsuario, insertDTO);
 
             return new Response<RecordatorioInsertDTO>(insertDTO);
         }
@@ -35,7 +40,7 @@
                 "No hay ningún recordatorio con este usuario"
             };
 
-            return new Response<IEnumerable<RecordatorioDTO>>(null, false, errors, ResponseMessage.NotFound)
+            return new Response<IEnumerable<RecordatorioDTO>>(null, false, errors, ResponseMessage.NotFound);
         }
     }
 }
