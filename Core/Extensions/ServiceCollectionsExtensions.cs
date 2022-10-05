@@ -5,14 +5,16 @@ public static class ServiceCollectionsExtensions
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddTransient<IUsuarioRepository, UsuarioRepository>()
-                .AddTransient<IRecordatorioBusiness, RecordatorioBusiness>();
+                .AddTransient<IRecordatorioRepository, RecordatorioRepository>()
+                .AddTransient<IGrupoRepository, GrupoRepository>();
         return services;
     }
 
     public static IServiceCollection AddBusiness(this IServiceCollection services)
     {
         services.AddTransient<IUsuarioBusiness, UsuarioBusiness>()
-                .AddTransient<IRecordatorioRepository, RecordatorioRepository>();
+                .AddTransient<IRecordatorioBusiness, RecordatorioBusiness>()
+                .AddTransient<IGrupoBusiness, GrupoBusiness>();
         return services;
     }
 }

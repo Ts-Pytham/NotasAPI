@@ -1,6 +1,4 @@
-﻿using NotasAPI.Entities;
-
-namespace NotasAPI.Core.Business;
+﻿namespace NotasAPI.Core.Business;
 
 public class GrupoBusiness : IGrupoBusiness
 {
