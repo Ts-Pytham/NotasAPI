@@ -10,6 +10,7 @@ public partial class Grupo : Entity
 
     public int Codigo { get; set; }
     public long IdMonitor { get; set; }
+    public string Nombre { get; set; }
 
 }
 

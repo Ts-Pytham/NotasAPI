@@ -29,6 +29,7 @@ public static class UsuarioMapper
 
         return usuarioDTO;
     }
+
     public static UsuarioDTO MapToUsuarioDTO(this Usuario usuario)
     {
         var usuarioDTO = new UsuarioDTO
@@ -42,5 +43,27 @@ public static class UsuarioMapper
         };
 
         return usuarioDTO;
+    }
+
+    public static GrupoConUsuario MapToGrupoConUsuario(this UsuarioDTO usuario, long idgrupo)
+    {
+        var grupo = new GrupoConUsuario
+        {
+            IdGrupo = idgrupo,
+            IdUsuario = usuario.Id
+        };
+
+        return grupo;
+    }
+
+    public static GrupoWithUserDTO MapToGrupoWithUserDTO(this UsuarioDTO usuario, GrupoDTO grupoDto)
+    {
+        var g = new GrupoWithUserDTO
+        {
+            GrupoDTO = grupoDto,
+            UsuarioDTO = usuario
+        };
+
+        return g;
     }
 }
