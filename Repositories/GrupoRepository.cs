@@ -6,9 +6,9 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
     {
     }
 
-    public async Task<GrupoDTO> CreateGrupoAsync(GrupoInsertDTO insertDTO)
+    public async Task<GrupoDTO> CreateGrupoAsync(GrupoInsertDTO insertDTO, int codigo)
     {
-        var grupo = insertDTO.MapToGrupo();
+        var grupo = insertDTO.MapToGrupo(codigo);
         Context.Add(grupo);
 
         await SaveAsync();

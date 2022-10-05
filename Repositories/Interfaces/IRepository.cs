@@ -7,5 +7,6 @@ public interface IRepository<TEntity> where TEntity : Entity
     Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate);
     Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate);
     Task<IEnumerable<TEntity>> GetEntitiesAsync(Expression<Func<TEntity, bool>> predicate);
+    Task<IEnumerable<TEntity>> GetEntitiesAsync();
     Task<int> SaveAsync();
 }

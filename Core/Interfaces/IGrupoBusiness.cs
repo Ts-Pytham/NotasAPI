@@ -2,11 +2,11 @@
 
 public interface IGrupoBusiness
 {
-    public Response<Task<GrupoDTO>> CreateGrupoAsync(GrupoInsertDTO insertDTO);
+    public Task<Response<GrupoDTO>> CreateGrupoAsync(GrupoInsertDTO insertDTO);
 
-    public Response<Task<IEnumerable<UsuarioDTO>>> GetUsuariosAsync(int idGrupo);
+    public Task<Response<IEnumerable<UsuarioDTO>>> GetUsuariosAsync(int idGrupo);
 
-    public Response<Task<IEnumerable<RecordatorioDTO>>> GetRecordatoriosAsync(int idGrupo);
+    public Task<Response<IEnumerable<RecordatorioDTO>>> GetRecordatoriosAsync(int idGrupo);
 
-    public Response<Task<GrupoWithUserDTO>> InsertToGrupoAsync(int idCodigo, UsuarioDTO usuario);
+    public Task<Response<GrupoWithUserDTO>> InsertToGrupoAsync(int idCodigo, UsuarioDTO usuario);
 }

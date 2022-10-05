@@ -2,11 +2,10 @@
 
 public static class GrupoMapper
 {
-    public static Grupo MapToGrupo(this GrupoInsertDTO grupoDTO)
+    public static Grupo MapToGrupo(this GrupoInsertDTO grupoDTO, int codigo)
     {
         var grupo = new Grupo
         {
-            Codigo = grupoDTO.Codigo,
             IdMonitor = grupoDTO.IdMonitor,
             Nombre = grupoDTO.Nombre,
         };

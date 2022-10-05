@@ -1,6 +1,4 @@
-﻿using NotasAPI.Core.Models.DTOs.Usuario;
-
-namespace NotasAPI.Core.Business;
+﻿namespace NotasAPI.Core.Business;
 
 public class UsuarioBusiness : IUsuarioBusiness
 {
@@ -9,6 +7,7 @@ public class UsuarioBusiness : IUsuarioBusiness
     public UsuarioBusiness(IUsuarioRepository usuarioRepository)
     {
         _usuarioRepository = usuarioRepository;
+        
     }
 
     public async Task<Response<UsuarioDTO>> Register(UsuarioInsertDTO insertDTO)

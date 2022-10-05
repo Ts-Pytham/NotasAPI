@@ -33,4 +33,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
     public virtual Task<int> SaveAsync()
         => _context.SaveChangesAsync();
+
+    public async virtual Task<IEnumerable<TEntity>> GetEntitiesAsync()
+        => await _entities.ToListAsync();
 }

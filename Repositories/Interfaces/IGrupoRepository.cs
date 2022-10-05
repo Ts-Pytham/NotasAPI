@@ -2,7 +2,7 @@
 
 public interface IGrupoRepository : IRepository<Grupo>
 {
-    public Task<GrupoDTO> CreateGrupoAsync(GrupoInsertDTO insertDTO);
+    public Task<GrupoDTO> CreateGrupoAsync(GrupoInsertDTO insertDTO, int codigo);
 
     public Task<IEnumerable<UsuarioDTO>> GetUsuariosAsync(int idGrupo);
 
