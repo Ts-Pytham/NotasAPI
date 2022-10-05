@@ -31,7 +31,7 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
     {
         var usuariosList = await Context.Set<GrupoConUsuario>()
                                         .Include(x => x.IdUsuarioNavigation)
-                                        .Where(x => x.Id == idGrupo)
+                                        .Where(x => x.IdGrupo == idGrupo)
                                         .Select(x => x.IdUsuarioNavigation.MapToUsuarioDTO())
                                         .ToListAsync();
 
@@ -56,14 +56,24 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
         return exists;
     }
 
-    public async Task<GrupoWithUserDTO> InsertToGrupoAsync(GrupoDTO grupo, UsuarioDTO usuario)
+    public async Task<GrupoWithUserDTO> InsertToGrupoAsync(GrupoDTO grupo, Usuario usuario)
     {
-        var grupoWithUser = usuario.MapToGrupoConUsuario(grupo.Id);
+        var usuarioDto = usuario.MapToUsuarioDTO();
+        var grupoWithUser = usuarioDto.MapToGrupoConUsuario(grupo.Id);
 
         Context.Add(grupoWithUser);
 
         await SaveAsync();
 
-        return usuario.MapToGrupoWithUserDTO(grupo);
+        return usuarioDto.MapToGrupoWithUserDTO(grupo);
+    }
+
+
+    public async Task<bool> CheckMonitor(long idMonitor)
+    {
+        return await Context.Set<Usuario>()
+                            .Include(x => x.IdRolNavigation)
+                            .Where(x => x.Id == idMonitor && x.IdRolNavigation.Id == (int)RolEnum.Monitor)
+                            .AnyAsync();
     }
 }

@@ -8,9 +8,11 @@ public interface IGrupoRepository : IRepository<Grupo>
 
     public Task<IEnumerable<RecordatorioDTO>> GetRecordatoriosAsync(int idGrupo);
 
-    public Task<GrupoWithUserDTO> InsertToGrupoAsync(GrupoDTO grupo, UsuarioDTO usuario);
+    public Task<GrupoWithUserDTO> InsertToGrupoAsync(GrupoDTO grupo, Usuario usuario);
 
     public Task<bool> GrupoExists(int codigo);
 
     public Task<Grupo> GrupoExistsWithGrupo(int codigo);
+
+    public Task<bool> CheckMonitor(long idMonitor);
 }

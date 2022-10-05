@@ -8,6 +8,7 @@ public static class GrupoMapper
         {
             IdMonitor = grupoDTO.IdMonitor,
             Nombre = grupoDTO.Nombre,
+            Codigo = codigo,
         };
 
         return grupo;
