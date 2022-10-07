@@ -16,7 +16,7 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
         return grupo.MapToGrupoDTO();
     }
 
-    public async Task<IEnumerable<RecordatorioDTO>> GetRecordatoriosAsync(int idGrupo)
+    public async Task<IEnumerable<RecordatorioDTO>> GetRecordatoriosAsync(long idGrupo)
     {
         var recordatoriosList = await Context.Set<GrupoConRecordatorio>()
                                              .Include(x => x.IdRecordatorioNavigation)
@@ -27,7 +27,7 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
         return recordatoriosList;
     }
 
-    public async Task<IEnumerable<UsuarioDTO>> GetUsuariosAsync(int idGrupo)
+    public async Task<IEnumerable<UsuarioDTO>> GetUsuariosAsync(long idGrupo)
     {
         var usuariosList = await Context.Set<GrupoConUsuario>()
                                         .Include(x => x.IdUsuarioNavigation)

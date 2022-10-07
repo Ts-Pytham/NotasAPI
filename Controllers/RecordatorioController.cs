@@ -14,7 +14,7 @@ namespace NotasAPI.Controllers
         }
 
         [HttpGet("{idUsuario}")]
-        public async Task<ActionResult<Response<IEnumerable<RecordatorioDTO>>>> GetRecordatorios(int idUsuario)
+        public async Task<ActionResult<Response<IEnumerable<RecordatorioDTO>>>> GetRecordatorios(long idUsuario)
         {
             var result = await _recordatorioBusiness.GetAllRecordatorios(idUsuario);
 
@@ -27,7 +27,7 @@ namespace NotasAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RecordatorioInsertDTO>> CreateRecordatorio(int idUsuario, RecordatorioInsertDTO insertDTO)
+        public async Task<ActionResult<RecordatorioInsertDTO>> CreateRecordatorio(long idUsuario, RecordatorioInsertDTO insertDTO)
         {
             var result = await _recordatorioBusiness.CreateRecordatorio(idUsuario, insertDTO);
             

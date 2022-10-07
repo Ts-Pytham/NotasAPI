@@ -14,7 +14,7 @@ public class GrupoController : ControllerBase
     }
 
     [HttpGet("recordatorios/{idGrupo}")]
-    public async Task<ActionResult<Response<IEnumerable<RecordatorioDTO>>>> GetRecordatorios(int idGrupo)
+    public async Task<ActionResult<Response<IEnumerable<RecordatorioDTO>>>> GetRecordatorios(long idGrupo)
     {
         var result = await _grupoBusiness.GetRecordatoriosAsync(idGrupo);
 
@@ -32,7 +32,7 @@ public class GrupoController : ControllerBase
     }
 
     [HttpGet("usuarios/{idGrupo}")]
-    public async Task<ActionResult<Response<IEnumerable<UsuarioDTO>>>> GetUsuarios(int idGrupo)
+    public async Task<ActionResult<Response<IEnumerable<UsuarioDTO>>>> GetUsuarios(long idGrupo)
     {
         var result = await _grupoBusiness.GetUsuariosAsync(idGrupo);
 

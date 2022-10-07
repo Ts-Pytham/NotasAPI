@@ -75,7 +75,7 @@ public class GrupoBusiness : IGrupoBusiness
         }
     }
 
-    public async Task<Response<IEnumerable<RecordatorioDTO>>> GetRecordatoriosAsync(int idGrupo)
+    public async Task<Response<IEnumerable<RecordatorioDTO>>> GetRecordatoriosAsync(long idGrupo)
     {
         try
         {
@@ -106,7 +106,7 @@ public class GrupoBusiness : IGrupoBusiness
         }
     }
 
-    public async Task<Response<IEnumerable<UsuarioDTO>>> GetUsuariosAsync(int idGrupo)
+    public async Task<Response<IEnumerable<UsuarioDTO>>> GetUsuariosAsync(long idGrupo)
     {
         try
         {

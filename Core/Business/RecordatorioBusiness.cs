@@ -13,7 +13,7 @@ public class RecordatorioBusiness : IRecordatorioBusiness
         _grupoRepository = grupoRepository;
     }
 
-    public async Task<Response<RecordatorioInsertDTO>> CreateRecordatorio(int idUsuario, RecordatorioInsertDTO insertDTO)
+    public async Task<Response<RecordatorioInsertDTO>> CreateRecordatorio(long idUsuario, RecordatorioInsertDTO insertDTO)
     {
         var result  = await _recordatorioRepository.CreateRecordatorioAsync(idUsuario, insertDTO);
 
@@ -30,7 +30,7 @@ public class RecordatorioBusiness : IRecordatorioBusiness
         return new Response<RecordatorioInsertDTO>(insertDTO);
     }
 
-    public async Task<Response<RecordatorioWithGroupDTO>> CreateRecordatorioInGroup(int idUsuario, int idGrupo, RecordatorioInsertDTO insertDTO)
+    public async Task<Response<RecordatorioWithGroupDTO>> CreateRecordatorioInGroup(long idUsuario, long idGrupo, RecordatorioInsertDTO insertDTO)
     {
         try
         {
@@ -104,7 +104,7 @@ public class RecordatorioBusiness : IRecordatorioBusiness
         }
     }
 
-    public async Task<Response<IEnumerable<RecordatorioDTO>>> GetAllRecordatorios(int idUsuario)
+    public async Task<Response<IEnumerable<RecordatorioDTO>>> GetAllRecordatorios(long idUsuario)
     {
         var recordatorios = await _recordatorioRepository.GetAllRecordatoriosAsync(idUsuario);
 

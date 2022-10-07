@@ -6,7 +6,7 @@
         {
         }
 
-        public async Task<RecordatorioInsertDTO> CreateRecordatorioAsync(int idUsuario, RecordatorioInsertDTO insertDTO)
+        public async Task<RecordatorioInsertDTO> CreateRecordatorioAsync(long idUsuario, RecordatorioInsertDTO insertDTO)
         {
             var existsUser = await Context.Set<Usuario>().Where(x => x.Id == idUsuario).AnyAsync();
 
@@ -22,7 +22,7 @@
             return insertDTO;
         }
 
-        public async Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(int idUsuario, GrupoDTO grupo, RecordatorioInsertDTO insertDTO)
+        public async Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(long idUsuario, GrupoDTO grupo, RecordatorioInsertDTO insertDTO)
         {
             var recordatorio = insertDTO.MapToRecordatorio(idUsuario);
 
@@ -60,7 +60,7 @@
             return deleteDTO;
         }
 
-        public async Task<IEnumerable<RecordatorioDTO>> GetAllRecordatoriosAsync(int idUsuario)
+        public async Task<IEnumerable<RecordatorioDTO>> GetAllRecordatoriosAsync(long idUsuario)
         {
             var recordatorios = (await GetEntitiesAsync(x => x.IdUsuario == idUsuario))
                                 .Select(x => x.MapToRecordatorioDTO());
@@ -68,7 +68,7 @@
             return recordatorios;
         }
 
-        public Task<RecordatorioDTO> GetRecordatorioAsync(int idUsuario, Expression<Func<Recordatorio, bool>> predicate)
+        public Task<RecordatorioDTO> GetRecordatorioAsync(long idUsuario, Expression<Func<Recordatorio, bool>> predicate)
         {
             throw new NotImplementedException();
         }

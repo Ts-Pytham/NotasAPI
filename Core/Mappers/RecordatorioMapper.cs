@@ -2,7 +2,7 @@
 
 public static class RecordatorioMapper
 {
-    public static Recordatorio MapToRecordatorio(this RecordatorioInsertDTO recordatorioDTO, int idUsuario)
+    public static Recordatorio MapToRecordatorio(this RecordatorioInsertDTO recordatorioDTO, long idUsuario)
     {
         var recordatorio = new Recordatorio
         {
