@@ -4,7 +4,7 @@
     {
         Task<RecordatorioInsertDTO> CreateRecordatorioAsync(int idUsuario, RecordatorioInsertDTO insertDTO);
 
-        Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(int idUsuario, int idGrupo, RecordatorioInsertDTO insertDTO);
+        Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(int idUsuario, GrupoDTO grupo, RecordatorioInsertDTO insertDTO);
 
         Task<RecordatorioUpdateDTO> UpdateRecordatorioAsync(int idUsuario, RecordatorioUpdateDTO updateDTO);
 
