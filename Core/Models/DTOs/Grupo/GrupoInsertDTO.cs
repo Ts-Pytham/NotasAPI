@@ -1,9 +1,8 @@
-﻿namespace NotasAPI.Core.Models.DTOs.Grupo
-{
-    public class GrupoInsertDTO
-    {
-        public string Nombre { get; set; }
+﻿namespace NotasAPI.Core.Models.DTOs.Grupo;
 
-        public long IdMonitor { get; set; }
-    }
+public class GrupoInsertDTO
+{
+    public string Nombre { get; set; }
+
+    public long IdMonitor { get; set; }
 }

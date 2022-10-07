@@ -5,4 +5,6 @@ public interface IUsuarioBusiness
     public Task<Response<UsuarioDTO>> Register(UsuarioInsertDTO insertDTO);
 
     public Task<Response<UsuarioDTO>> Login(UsuarioLoginDTO loginDTO);
+
+    public Task<Response<IEnumerable<UsuarioDTO>>> GetAllUsuarios();
 }

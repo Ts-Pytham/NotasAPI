@@ -1,96 +1,93 @@
-﻿using NotasAPI.Entities;
+﻿namespace NotasAPI.Controllers;
 
-namespace NotasAPI.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class RecordatorioController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class RecordatorioController : ControllerBase
+    private readonly IRecordatorioBusiness _recordatorioBusiness;
+
+    public RecordatorioController(IRecordatorioBusiness recordatorioBusiness)
     {
-        private readonly IRecordatorioBusiness _recordatorioBusiness;
+        _recordatorioBusiness = recordatorioBusiness;
+    }
 
-        public RecordatorioController(IRecordatorioBusiness recordatorioBusiness)
+    [HttpGet("{idUsuario}")]
+    public async Task<ActionResult<Response<IEnumerable<RecordatorioDTO>>>> GetRecordatorios(long idUsuario)
+    {
+        var result = await _recordatorioBusiness.GetAllRecordatorios(idUsuario);
+
+        if (result.Succeeded)
         {
-            _recordatorioBusiness = recordatorioBusiness;
+            return Ok(result);
         }
 
-        [HttpGet("{idUsuario}")]
-        public async Task<ActionResult<Response<IEnumerable<RecordatorioDTO>>>> GetRecordatorios(long idUsuario)
+        return NotFound(result);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<RecordatorioInsertDTO>> CreateRecordatorio(long idUsuario, RecordatorioInsertDTO insertDTO)
+    {
+        var result = await _recordatorioBusiness.CreateRecordatorio(idUsuario, insertDTO);
+        
+        if (result.Succeeded)
         {
-            var result = await _recordatorioBusiness.GetAllRecordatorios(idUsuario);
+            return Ok(result);
+        }
 
-            if (result.Succeeded)
-            {
-                return Ok(result);
-            }
+        return NotFound(result);
+    }
 
+    [HttpPost("grupos/{idGrupo}/{idUsuario}")]
+    public async Task<ActionResult<Response<RecordatorioWithGroupDTO>>> CreateRecordatorioInGroup(long idGrupo, long idUsuario, RecordatorioInsertDTO insertDTO)
+    {
+        var result = await _recordatorioBusiness.CreateRecordatorioInGroup(idUsuario, idGrupo, insertDTO);
+
+        if (result.Succeeded)
+        {
+            return Ok(result);
+        }
+
+        if (result.Message == ResponseMessage.NotFound)
+        {
+           return NotFound(result);
+        }
+
+        return BadRequest(result);
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<Response<RecordatorioUpdateDTO>>> UpdateRecordatorio([FromBody] RecordatorioUpdateDTO updateDTO)
+    {
+        var result = await _recordatorioBusiness.UpdateRecordatorio(updateDTO);
+
+        if (result.Succeeded)
+        {
+            return Ok(result);
+        }
+
+        if (result.Message == ResponseMessage.NotFound)
+        {
             return NotFound(result);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<RecordatorioInsertDTO>> CreateRecordatorio(long idUsuario, RecordatorioInsertDTO insertDTO)
-        {
-            var result = await _recordatorioBusiness.CreateRecordatorio(idUsuario, insertDTO);
-            
-            if (result.Succeeded)
-            {
-                return Ok(result);
-            }
+        return BadRequest(result);
+    }
 
+    [HttpDelete("{idRecordatorio}")]
+    public async Task<ActionResult<Response<RecordatorioDeleteDTO>>> DeleteRecordatorio(long idRecordatorio)
+    {
+        var result = await _recordatorioBusiness.DeleteRecordatorio(idRecordatorio);
+
+        if (result.Succeeded)
+        {
+            return Ok(result);
+        }
+
+        if (result.Message == ResponseMessage.NotFound)
+        {
             return NotFound(result);
         }
 
-        [HttpPost("grupos/{idGrupo}/{idUsuario}")]
-        public async Task<ActionResult<Response<RecordatorioWithGroupDTO>>> CreateRecordatorioInGroup(long idGrupo, long idUsuario, RecordatorioInsertDTO insertDTO)
-        {
-            var result = await _recordatorioBusiness.CreateRecordatorioInGroup(idUsuario, idGrupo, insertDTO);
-
-            if (result.Succeeded)
-            {
-                return Ok(result);
-            }
-
-            if (result.Message == ResponseMessage.NotFound)
-            {
-               return NotFound(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult<Response<RecordatorioUpdateDTO>>> UpdateRecordatorio([FromBody] RecordatorioUpdateDTO updateDTO)
-        {
-            var result = await _recordatorioBusiness.UpdateRecordatorio(updateDTO);
-
-            if (result.Succeeded)
-            {
-                return Ok(result);
-            }
-
-            if (result.Message == ResponseMessage.NotFound)
-            {
-                return NotFound(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpDelete("{idRecordatorio}")]
-        public async Task<ActionResult<Response<RecordatorioDeleteDTO>>> DeleteRecordatorio(long idRecordatorio)
-        {
-            var result = await _recordatorioBusiness.DeleteRecordatorio(idRecordatorio);
-
-            if (result.Succeeded)
-            {
-                return Ok(result);
-            }
-
-            if (result.Message == ResponseMessage.NotFound)
-            {
-                return NotFound(result);
-            }
-
-            return BadRequest(result);
-        }
+        return BadRequest(result);
     }
 }

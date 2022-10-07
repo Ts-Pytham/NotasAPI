@@ -67,4 +67,11 @@ public class UsuarioBusiness : IUsuarioBusiness
 
         return new Response<UsuarioDTO>(user);
     }
+
+    public async Task<Response<IEnumerable<UsuarioDTO>>> GetAllUsuarios()
+    {
+        var usuarios = await _usuarioRepository.GetEntitiesAsync();
+
+        return new Response<IEnumerable<UsuarioDTO>>(usuarios.Select(x => x.MapToUsuarioDTO()));
+    }
 }

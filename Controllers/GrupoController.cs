@@ -67,10 +67,30 @@ public class GrupoController : ControllerBase
         return BadRequest(result);
     }
 
+
+
     [HttpPost("{idCodigo}/{idUsuario}")]
     public async Task<ActionResult<Response<GrupoWithUserDTO>>> InsertToGrupo(int idCodigo, long idUsuario)
     {
         var result = await _grupoBusiness.InsertToGrupoAsync(idCodigo,idUsuario);
+
+        if (result.Succeeded)
+        {
+            return Ok(result);
+        }
+
+        if (result.Message == ResponseMessage.NotFound)
+        {
+            return NotFound(result);
+        }
+
+        return BadRequest(result);
+    }
+
+    [HttpPost("{idGrupo}")]
+    public async Task<ActionResult<Response<IEnumerable<UsuarioDTO>>>> AddUsersInGroup(long idGrupo, IEnumerable<UsuarioDTO> usuarios)
+    {
+        var result = await _grupoBusiness.AddUsersInGroup(idGrupo, usuarios);
 
         if (result.Succeeded)
         {

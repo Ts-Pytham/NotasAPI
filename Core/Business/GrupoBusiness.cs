@@ -11,6 +11,45 @@ public class GrupoBusiness : IGrupoBusiness
         _usuarioRepository = usuarioRepository;
     }
 
+    public async Task<Response<IEnumerable<UsuarioDTO>>> AddUsersInGroup(long idGrupo, IEnumerable<UsuarioDTO> usuarios)
+    {
+        try
+        {
+            var existsGrupo = await _grupoRepository.GetByIdAsync(idGrupo);
+
+            if (existsGrupo is null)
+            {
+                return new Response<IEnumerable<UsuarioDTO>>(null, false, new string[] { "No existe el grupo!" }, ResponseMessage.NotFound);
+            }
+            foreach (var usuario in usuarios)
+            {
+                if (await _grupoRepository.UserExistsAndUserInGroup(usuario.Id, idGrupo))
+                {
+                    var errors = new string[]
+                    {
+                        $"El usuario con ID {usuario.Id} ya se encuentra en el grupo o no está creado!",
+                        $"No se ha podido ingresar {(usuarios.Count() > 1 ? "a los usuarios" : "al usuario")}!"
+                    };
+                    return new Response<IEnumerable<UsuarioDTO>>(null, false, errors, ResponseMessage.NotFound);
+                }
+            }
+
+            await _grupoRepository.AddUsersInGroupAsync(idGrupo, usuarios);
+
+            return new Response<IEnumerable<UsuarioDTO>>(usuarios);
+        }
+        catch(Exception e)
+        {
+            var errors = new string[]
+            {
+                e.Message,
+                "No se pudo crear los usuarios en el grupo!"
+            };
+
+            return new Response<IEnumerable<UsuarioDTO>>(null, false, errors, ResponseMessage.UnexpectedErrors);
+        }
+    }
+
     public async Task<Response<GrupoDTO>> CreateGrupoAsync(GrupoInsertDTO insertDTO)
     {
         try

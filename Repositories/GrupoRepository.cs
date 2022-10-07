@@ -9,11 +9,18 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
     public async Task<GrupoDTO> CreateGrupoAsync(GrupoInsertDTO insertDTO, int codigo)
     {
         var grupo = insertDTO.MapToGrupo(codigo);
-        Context.Add(grupo);
 
-        await SaveAsync();
+        await Context.AddAsync(grupo);
 
-        return grupo.MapToGrupoDTO();
+        var monitor = await Context.Set<Usuario>()
+                                   .Where(x => x.Id == insertDTO.IdMonitor)
+                                   .FirstOrDefaultAsync();
+
+        await Context.SaveChangesAsync();
+        var grupoDTO = grupo.MapToGrupoDTO();
+        await InsertToGrupoAsync(grupoDTO, monitor);
+
+        return grupoDTO;
     }
 
     public async Task<IEnumerable<RecordatorioDTO>> GetRecordatoriosAsync(long idGrupo)
@@ -61,11 +68,26 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
         var usuarioDto = usuario.MapToUsuarioDTO();
         var grupoWithUser = usuarioDto.MapToGrupoConUsuario(grupo.Id);
 
-        Context.Add(grupoWithUser);
+        await Context.AddAsync(grupoWithUser);
 
         await SaveAsync();
 
         return usuarioDto.MapToGrupoWithUserDTO(grupo);
     }
 
+    public async Task AddUsersInGroupAsync(long idGrupo, IEnumerable<UsuarioDTO> usuarios)
+    {
+        var grupoWithUsers = usuarios.Select(x => x.MapToGrupoConUsuario(idGrupo));
+
+        await Context.AddRangeAsync(grupoWithUsers);
+
+        await SaveAsync();
+    }
+
+    public async Task<bool> UserExistsAndUserInGroup(long idUsuario, long idGrupo)
+    {
+        return await Context.Set<GrupoConUsuario>()
+                            .Where(x => x.Id == idUsuario && x.IdGrupo == idGrupo)
+                            .AnyAsync();
+    }
 }

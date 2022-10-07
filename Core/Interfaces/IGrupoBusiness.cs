@@ -11,4 +11,6 @@ public interface IGrupoBusiness
     public Task<Response<GrupoWithUserDTO>> InsertToGrupoAsync(int idCodigo, long idUsuario);
 
     public Task<Response<IEnumerable<GrupoDTO>>> GetAllGrupos();
+
+    public Task<Response<IEnumerable<UsuarioDTO>>> AddUsersInGroup(long idGrupo, IEnumerable<UsuarioDTO> usuarios);
 }

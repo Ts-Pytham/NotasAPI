@@ -14,4 +14,7 @@ public interface IGrupoRepository : IRepository<Grupo>
 
     public Task<Grupo> GrupoExistsWithGrupo(int codigo);
 
+    public Task AddUsersInGroupAsync(long idGrupo, IEnumerable<UsuarioDTO> usuarios);
+
+    public Task<bool> UserExistsAndUserInGroup(long idUsuario, long idGrupo);
 }

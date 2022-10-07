@@ -1,4 +1,6 @@
-﻿namespace NotasAPI.Controllers;
+﻿using NotasAPI.Entities;
+
+namespace NotasAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -35,5 +37,12 @@ public class UsuarioController : ControllerBase
         }
 
         return NotFound(result);
+    }
+
+	[HttpGet]
+	public async Task<ActionResult<Response<IEnumerable<UsuarioDTO>>>> GetUsuarios()
+	{
+        var result = await _usuarioBusiness.GetAllUsuarios();
+        return Ok(result);
     }
 }
