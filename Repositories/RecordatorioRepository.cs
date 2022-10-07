@@ -22,6 +22,22 @@
             return insertDTO;
         }
 
+        public async Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(int idUsuario, GrupoDTO grupo, RecordatorioInsertDTO insertDTO)
+        {
+            var recordatorio = insertDTO.MapToRecordatorio(idUsuario);
+
+            await Context.AddAsync(recordatorio);
+
+            var gr = recordatorio.MapToGrupoConRecordatorioDTO(grupo.Id);
+
+            await Context.AddAsync(gr);
+
+            await SaveAsync();
+
+            return gr.MapToRecordatorioWithGroupDTO(grupo, recordatorio.MapToRecordatorioDTO());
+
+        }
+
         public Task<RecordatorioDeleteDTO> DeleteRecordatorioAsync(int idUsuario, RecordatorioDeleteDTO deleteDTO)
         {
             throw new NotImplementedException();

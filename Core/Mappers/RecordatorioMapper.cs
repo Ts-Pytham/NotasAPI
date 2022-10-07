@@ -29,4 +29,27 @@ public static class RecordatorioMapper
 
         return recordatorioDto;
     }
+
+    public static GrupoConRecordatorio MapToGrupoConRecordatorioDTO(this Recordatorio recordatorio, long idGrupo)
+    {
+        var gr = new GrupoConRecordatorio
+        {
+            IdGrupo = idGrupo,
+            IdRecordatorio = recordatorio.Id,
+        };
+
+        return gr;
+    }
+
+    public static RecordatorioWithGroupDTO MapToRecordatorioWithGroupDTO(this GrupoConRecordatorio recordatorioG, GrupoDTO grupo, RecordatorioDTO recordatorio)
+    {
+        var gr = new RecordatorioWithGroupDTO
+        {
+            Id = recordatorioG.Id,
+            GrupoDTO = grupo,
+            Recordatorio = recordatorio
+        };
+
+        return gr;
+    }
 }
