@@ -34,10 +34,10 @@ public class RecordatorioBusiness : IRecordatorioBusiness
     {
         try
         {
-            var existsUser = await _usuarioRepository.GetByIdAsync(idUsuario);
+            var existsMonitor = await _usuarioRepository.CheckMonitor(idUsuario);
             var existsGroup = await _grupoRepository.GetByIdAsync(idGrupo);
 
-            if (existsGroup is null || existsUser is null)
+            if (existsGroup is null || !existsMonitor)
             {
                 var errors = new string[]
                 {
@@ -49,9 +49,9 @@ public class RecordatorioBusiness : IRecordatorioBusiness
                     errors = errors.Append("El grupo no existe!").ToArray();
                 }
 
-                if (existsUser is null)
+                if (!existsMonitor)
                 {
-                    errors = errors.Append("El usuario no existe!").ToArray();
+                    errors = errors.Append("Este monitor no existe!").ToArray();
                 }
 
                 return new Response<RecordatorioWithGroupDTO>(null, false, errors, ResponseMessage.NotFound);
@@ -73,6 +73,37 @@ public class RecordatorioBusiness : IRecordatorioBusiness
         }
     }
 
+    public async Task<Response<RecordatorioDeleteDTO>> DeleteRecordatorio(long idRecordatorio)
+    {
+        try
+        {
+            var recordatorio = await _recordatorioRepository.DeleteRecordatorioAsync(idRecordatorio);
+
+            if (recordatorio is null)
+            {
+                var errors = new string[]
+                {
+                    "El id del recordatorio no se encontró!",
+                    "No se pudo eliminar el recordatorio!"
+                };
+
+                return new Response<RecordatorioDeleteDTO>(null, false, errors, ResponseMessage.NotFound);
+            }
+
+            return new Response<RecordatorioDeleteDTO>(recordatorio);
+        }
+        catch (Exception e)
+        {
+            var errors = new string[]
+            {
+                e.Message,
+                "No se pudo eliminar el recordatorio!"
+            };
+
+            return new Response<RecordatorioDeleteDTO>(null, false, errors, ResponseMessage.NotFound);
+        }
+    }
+
     public async Task<Response<IEnumerable<RecordatorioDTO>>> GetAllRecordatorios(int idUsuario)
     {
         var recordatorios = await _recordatorioRepository.GetAllRecordatoriosAsync(idUsuario);
@@ -88,5 +119,37 @@ public class RecordatorioBusiness : IRecordatorioBusiness
         };
 
         return new Response<IEnumerable<RecordatorioDTO>>(null, false, errors, ResponseMessage.NotFound);
+    }
+
+    public async Task<Response<RecordatorioUpdateDTO>> UpdateRecordatorio(RecordatorioUpdateDTO updateDTO)
+    {
+        try
+        {
+            var recordatorio = await _recordatorioRepository.UpdateRecordatorioAsync(updateDTO);
+
+            if (recordatorio is null)
+            {
+                var errors = new string[]
+                {
+                    "El id del recordatorio no se encontró!",
+                    "No se pudo actualizar el recordatorio!"
+                };
+
+                return new Response<RecordatorioUpdateDTO>(null, false, errors, ResponseMessage.NotFound);
+            }
+
+            return new Response<RecordatorioUpdateDTO>(recordatorio);
+        }
+        catch(Exception e)
+        {
+            var errors = new string[]
+            {
+                e.Message,
+                "No se pudo actualizar el recordatorio!"
+            };
+
+            return new Response<RecordatorioUpdateDTO>(null, false, errors, ResponseMessage.NotFound);
+        }
+        
     }
 }

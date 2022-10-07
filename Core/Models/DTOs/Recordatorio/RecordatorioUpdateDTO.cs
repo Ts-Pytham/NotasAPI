@@ -1,5 +1,5 @@
 ﻿namespace NotasAPI.Core.Models.DTOs.Recordatorio;
 
-public class RecordatorioUpdateDTO : RecordatorioInsertDTO
+public class RecordatorioUpdateDTO : RecordatorioDTO
 {
 }

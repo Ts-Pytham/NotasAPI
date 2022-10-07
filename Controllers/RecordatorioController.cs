@@ -1,4 +1,6 @@
-﻿namespace NotasAPI.Controllers
+﻿using NotasAPI.Entities;
+
+namespace NotasAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -38,7 +40,7 @@
         }
 
         [HttpPost("grupos/{idGrupo}/{idUsuario}")]
-        public async Task<ActionResult<Response<RecordatorioWithGroupDTO>>> CreateRecordatorioInGroup(int idGrupo, int idUsuario, RecordatorioInsertDTO insertDTO)
+        public async Task<ActionResult<Response<RecordatorioWithGroupDTO>>> CreateRecordatorioInGroup(long idGrupo, long idUsuario, RecordatorioInsertDTO insertDTO)
         {
             var result = await _recordatorioBusiness.CreateRecordatorioInGroup(idUsuario, idGrupo, insertDTO);
 
@@ -50,6 +52,42 @@
             if (result.Message == ResponseMessage.NotFound)
             {
                return NotFound(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Response<RecordatorioUpdateDTO>>> UpdateRecordatorio([FromBody] RecordatorioUpdateDTO updateDTO)
+        {
+            var result = await _recordatorioBusiness.UpdateRecordatorio(updateDTO);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            if (result.Message == ResponseMessage.NotFound)
+            {
+                return NotFound(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpDelete("{idRecordatorio}")]
+        public async Task<ActionResult<Response<RecordatorioDeleteDTO>>> DeleteRecordatorio(long idRecordatorio)
+        {
+            var result = await _recordatorioBusiness.DeleteRecordatorio(idRecordatorio);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            if (result.Message == ResponseMessage.NotFound)
+            {
+                return NotFound(result);
             }
 
             return BadRequest(result);

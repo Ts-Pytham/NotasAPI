@@ -52,4 +52,24 @@ public static class RecordatorioMapper
 
         return gr;
     }
+
+    public static RecordatorioDeleteDTO MapToRecordatorioDeleteDTO(this Recordatorio recordatorio)
+    {
+        var deleteDTO = new RecordatorioDeleteDTO
+        {
+            Descripcion = recordatorio.Descripcion,
+            Fecha = recordatorio.Fecha,
+            Prioridad = recordatorio.Prioridad,
+            Titulo = recordatorio.Titulo,
+        };
+
+        return deleteDTO;
+    }
+    public static void SetToRecordatorio(this Recordatorio recordatorio, RecordatorioUpdateDTO updateDTO)
+    {
+        recordatorio.Prioridad = updateDTO.Prioridad;
+        recordatorio.Descripcion = updateDTO.Descripcion;
+        recordatorio.Fecha = updateDTO.Fecha;
+        recordatorio.Titulo = updateDTO.Titulo;
+    }
 }

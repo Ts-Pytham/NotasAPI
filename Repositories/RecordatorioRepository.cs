@@ -39,9 +39,25 @@
         }
 
 
-        public Task<RecordatorioDeleteDTO> DeleteRecordatorioAsync(int idUsuario, RecordatorioDeleteDTO deleteDTO)
+        public async Task<RecordatorioDeleteDTO> DeleteRecordatorioAsync(long idRecordatorio)
         {
-            throw new NotImplementedException();
+            var recordatorio = await Context.Set<Recordatorio>()
+                                            .Where(x => x.Id == idRecordatorio)
+                                            .FirstOrDefaultAsync();
+
+            
+            if (recordatorio is null)
+            {
+                return null;
+            }
+
+            var deleteDTO = recordatorio.MapToRecordatorioDeleteDTO();
+
+            Context.Remove(recordatorio);
+
+            await SaveAsync();
+
+            return deleteDTO;
         }
 
         public async Task<IEnumerable<RecordatorioDTO>> GetAllRecordatoriosAsync(int idUsuario)
@@ -57,9 +73,22 @@
             throw new NotImplementedException();
         }
 
-        public Task<RecordatorioUpdateDTO> UpdateRecordatorioAsync(int idUsuario, RecordatorioUpdateDTO updateDTO)
+        public async Task<RecordatorioUpdateDTO> UpdateRecordatorioAsync(RecordatorioUpdateDTO updateDTO)
         {
-            throw new NotImplementedException();
+            var recordatorio = await Context.Set<Recordatorio>()
+                                            .Where(x => x.Id == updateDTO.Id)
+                                            .FirstOrDefaultAsync();
+
+            if(recordatorio is null)
+            {
+                return null;
+            }
+
+            recordatorio.SetToRecordatorio(updateDTO);
+
+            await SaveAsync();
+
+            return updateDTO;
         }
     }
 }
