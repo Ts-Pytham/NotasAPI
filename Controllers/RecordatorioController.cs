@@ -11,8 +11,8 @@
             _recordatorioBusiness = recordatorioBusiness;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Response<IEnumerable<RecordatorioDTO>>>> GetRepositorios(int idUsuario)
+        [HttpGet("{idUsuario}")]
+        public async Task<ActionResult<Response<IEnumerable<RecordatorioDTO>>>> GetRecordatorios(int idUsuario)
         {
             var result = await _recordatorioBusiness.GetAllRecordatorios(idUsuario);
 
@@ -35,6 +35,24 @@
             }
 
             return NotFound(result);
+        }
+
+        [HttpPost("grupos/{idGrupo}/{idUsuario}")]
+        public async Task<ActionResult<Response<RecordatorioWithGroupDTO>>> CreateRecordatorioInGroup(int idGrupo, int idUsuario, RecordatorioInsertDTO insertDTO)
+        {
+            var result = await _recordatorioBusiness.CreateRecordatorioInGroup(idUsuario, idGrupo, insertDTO);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            if (result.Message == ResponseMessage.NotFound)
+            {
+               return NotFound(result);
+            }
+
+            return BadRequest(result);
         }
     }
 }

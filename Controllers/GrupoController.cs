@@ -85,4 +85,16 @@ public class GrupoController : ControllerBase
         return BadRequest(result);
     }
 
+    [HttpGet]
+    public async Task<ActionResult<Response<IEnumerable<GrupoDTO>>>> GetGrupos()
+    {
+        var result = await _grupoBusiness.GetAllGrupos();
+        if (result.Succeeded)
+        {
+            return Ok(result);
+        }
+
+        return BadRequest(result);
+        
+    }
 }

@@ -16,7 +16,7 @@ public class GrupoBusiness : IGrupoBusiness
         try
         {
 
-            if(! await _grupoRepository.CheckMonitor(insertDTO.IdMonitor))
+            if(! await _usuarioRepository.CheckMonitor(insertDTO.IdMonitor))
             {
                 var errors = new string[]
                 {
@@ -51,6 +51,27 @@ public class GrupoBusiness : IGrupoBusiness
             };
 
             return new Response<GrupoDTO>(null, false, errors, ResponseMessage.UnexpectedErrors);
+        }
+    }
+
+    public async Task<Response<IEnumerable<GrupoDTO>>> GetAllGrupos()
+    {
+        try
+        {
+            var grupos = (await _grupoRepository.GetEntitiesAsync())
+                                                .Select(x => x.MapToGrupoDTO());
+
+            return new Response<IEnumerable<GrupoDTO>>(grupos);
+        }
+        catch(Exception e)
+        {
+            var errors = new string[]
+            {
+                e.Message,
+                "No se pudo obtener los grupos!"
+            };
+
+            return new Response<IEnumerable<GrupoDTO>>(null, false, errors, ResponseMessage.UnexpectedErrors);
         }
     }
 

@@ -20,7 +20,7 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
     {
         var recordatoriosList = await Context.Set<GrupoConRecordatorio>()
                                              .Include(x => x.IdRecordatorioNavigation)
-                                             .Where(x => x.Id == idGrupo)
+                                             .Where(x => x.IdGrupo == idGrupo)
                                              .Select(x => x.IdRecordatorioNavigation.MapToRecordatorioDTO())
                                              .ToListAsync();
 
@@ -68,12 +68,4 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
         return usuarioDto.MapToGrupoWithUserDTO(grupo);
     }
 
-
-    public async Task<bool> CheckMonitor(long idMonitor)
-    {
-        return await Context.Set<Usuario>()
-                            .Include(x => x.IdRolNavigation)
-                            .Where(x => x.Id == idMonitor && x.IdRolNavigation.Id == (int)RolEnum.Monitor)
-                            .AnyAsync();
-    }
 }

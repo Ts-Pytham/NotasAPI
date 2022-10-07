@@ -14,5 +14,4 @@ public interface IGrupoRepository : IRepository<Grupo>
 
     public Task<Grupo> GrupoExistsWithGrupo(int codigo);
 
-    public Task<bool> CheckMonitor(long idMonitor);
 }

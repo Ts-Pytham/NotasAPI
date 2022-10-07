@@ -9,4 +9,6 @@ public interface IGrupoBusiness
     public Task<Response<IEnumerable<RecordatorioDTO>>> GetRecordatoriosAsync(int idGrupo);
 
     public Task<Response<GrupoWithUserDTO>> InsertToGrupoAsync(int idCodigo, long idUsuario);
+
+    public Task<Response<IEnumerable<GrupoDTO>>> GetAllGrupos();
 }

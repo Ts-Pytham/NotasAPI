@@ -33,4 +33,12 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 
         return existsUser.MapToUsuarioWithRolDTO();
     }
+
+    public async Task<bool> CheckMonitor(long idMonitor)
+    {
+        return await Context.Set<Usuario>()
+                            .Include(x => x.IdRolNavigation)
+                            .Where(x => x.Id == idMonitor && x.IdRolNavigation.Id == (int)RolEnum.Monitor)
+                            .AnyAsync();
+    }
 }
