@@ -45,22 +45,6 @@ public static class UsuarioMapper
         return usuarioDTO;
     }
 
-    public static UsuarioCookies MapToUsuarioCookies(this Usuario usuario, string password)
-    {
-        var usuarioCookies = new UsuarioCookies
-        {
-            Codigo = usuario.Codigo,
-            Correo = usuario.Correo,
-            Id = usuario.Id,
-            Nombre = usuario.Nombre,
-            Rol = ((RolEnum)usuario.IdRol).GetDisplayName(),
-            Password = password
-
-        };
-
-        return usuarioCookies;
-    }
-
     public static GrupoConUsuario MapToGrupoConUsuario(this UsuarioDTO usuario, long idgrupo)
     {
         var grupo = new GrupoConUsuario

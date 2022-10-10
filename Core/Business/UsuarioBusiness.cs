@@ -52,7 +52,7 @@ public class UsuarioBusiness : IUsuarioBusiness
         }
     }
 
-    public async Task<Response<UsuarioCookies>> Login(UsuarioLoginDTO loginDTO)
+    public async Task<Response<UsuarioDTO>> Login(UsuarioLoginDTO loginDTO)
     {
         var user = await _usuarioRepository.LoginUsuarioAsync(loginDTO);
 
@@ -62,10 +62,10 @@ public class UsuarioBusiness : IUsuarioBusiness
             {
                 "El correo/código o contraseña son incorrectos!"
             };
-            return new Response<UsuarioCookies>(user, false, errors, ResponseMessage.NotFound);
+            return new Response<UsuarioDTO>(user, false, errors, ResponseMessage.NotFound);
         }
 
-        return new Response<UsuarioCookies>(user);
+        return new Response<UsuarioDTO>(user);
     }
 
     public async Task<Response<IEnumerable<UsuarioDTO>>> GetAllUsuarios()

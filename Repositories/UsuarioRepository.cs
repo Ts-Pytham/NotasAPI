@@ -16,7 +16,7 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         return usuario.MapToUsuarioDTO();
     }
 
-    public async Task<UsuarioCookies> LoginUsuarioAsync(UsuarioLoginDTO usuarioDTO)
+    public async Task<UsuarioDTO> LoginUsuarioAsync(UsuarioLoginDTO usuarioDTO)
     {
 
         var existsUser = await Context.Set<Usuario>()
@@ -31,7 +31,7 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         if (!usuarioDTO.Password.VerifyHashPasswordBCrypt(existsUser.Contraseña))
             return null;
 
-        return existsUser.MapToUsuarioCookies(usuarioDTO.Password);
+        return existsUser.MapToUsuarioWithRolDTO();
     }
 
     public async Task<bool> CheckMonitor(long idMonitor)
