@@ -2,10 +2,10 @@
 
 public class RecordatorioInsertDTO
 {
-    [Required]
+    [Required, MaxLength(100, ErrorMessage = "El mensaje debe tener como máximo 100 caracteres!")]
     public string Titulo { get; set; }
 
-    [Required]
+    [Required, MaxLength(255, ErrorMessage = "El mensaje debe tener como máximo 255 caracteres!")]
     public string Descripcion { get; set; }
 
     [Required]
