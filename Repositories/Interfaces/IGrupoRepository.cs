@@ -17,4 +17,6 @@ public interface IGrupoRepository : IRepository<Grupo>
     public Task AddUsersInGroupAsync(long idGrupo, IEnumerable<UsuarioDTO> usuarios);
 
     public Task<bool> UserExistsAndUserInGroup(long idUsuario, long idGrupo);
+
+    public Task<IEnumerable<GrupoDTO>> GetGroupsOfUsers(long idUsuario);
 }

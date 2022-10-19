@@ -13,4 +13,6 @@ public interface IGrupoBusiness
     public Task<Response<IEnumerable<GrupoDTO>>> GetAllGrupos();
 
     public Task<Response<IEnumerable<UsuarioDTO>>> AddUsersInGroup(long idGrupo, IEnumerable<UsuarioDTO> usuarios);
+
+    public Task<Response<IEnumerable<GrupoDTO>>> GetGroupsOfUsers(long idUsuario);
 }

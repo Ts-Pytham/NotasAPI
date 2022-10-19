@@ -90,4 +90,13 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
                             .Where(x => x.Id == idUsuario && x.IdGrupo == idGrupo)
                             .AnyAsync();
     }
+
+    public async Task<IEnumerable<GrupoDTO>> GetGroupsOfUsers(long idUsuario)
+    {
+        return await Context.Set<GrupoConUsuario>()
+                            .Include(x => x.IdGrupoNavigation)
+                            .Where(x => x.IdUsuario == idUsuario)
+                            .Select(x => x.IdGrupoNavigation.MapToGrupoDTO())
+                            .ToListAsync();
+    }
 }

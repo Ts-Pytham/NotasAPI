@@ -49,6 +49,25 @@ public class GrupoController : ControllerBase
         return BadRequest(result);
     }
 
+
+    [HttpGet("usuarios/{idUsuario}/grupos")]
+    public async Task<ActionResult<Response<IEnumerable<UsuarioDTO>>>> GetGroupsOfUsers(long idUsuario)
+    {
+        var result = await _grupoBusiness.GetGroupsOfUsers(idUsuario);
+
+        if (result.Succeeded)
+        {
+            return Ok(result);
+        }
+
+        if (result.Message == ResponseMessage.NotFound)
+        {
+            return NotFound(result);
+        }
+
+        return BadRequest(result);
+    }
+
     [HttpPost]
     public async Task<ActionResult<Response<GrupoDTO>>> CreateGrupo(GrupoInsertDTO insertDTO)
     {

@@ -114,6 +114,37 @@ public class GrupoBusiness : IGrupoBusiness
         }
     }
 
+    public async Task<Response<IEnumerable<GrupoDTO>>> GetGroupsOfUsers(long idUsuario)
+    {
+        try
+        {
+            if(await _usuarioRepository.GetByIdAsync(idUsuario) is null)
+            {
+                var errors = new string[]
+                {
+                    "Este usuario no existe!",
+                    "No se pudo obtener los grupos!"
+                };
+
+                return new Response<IEnumerable<GrupoDTO>>(null, false, errors, ResponseMessage.NotFound);
+            }
+
+            var groups = await _grupoRepository.GetGroupsOfUsers(idUsuario);
+
+            return new Response<IEnumerable<GrupoDTO>>(groups);
+        }
+        catch(Exception e)
+        {
+            var errors = new string[]
+            {
+                e.Message,
+                "No se pudo obtener los grupos!"
+            };
+
+            return new Response<IEnumerable<GrupoDTO>>(null, false, errors, ResponseMessage.UnexpectedErrors);
+        }
+    }
+
     public async Task<Response<IEnumerable<RecordatorioDTO>>> GetRecordatoriosAsync(long idGrupo)
     {
         try
