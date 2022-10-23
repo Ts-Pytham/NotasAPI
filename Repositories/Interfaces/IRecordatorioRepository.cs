@@ -2,7 +2,7 @@
 
 public interface IRecordatorioRepository : IRepository<Recordatorio>
 {
-    Task<RecordatorioInsertDTO> CreateRecordatorioAsync(long idUsuario, RecordatorioInsertDTO insertDTO);
+    Task<RecordatorioDTO> CreateRecordatorioAsync(long idUsuario, RecordatorioInsertDTO insertDTO);
 
     Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(long idUsuario, GrupoDTO grupo, RecordatorioInsertDTO insertDTO);
 

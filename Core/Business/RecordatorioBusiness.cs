@@ -13,7 +13,7 @@ public class RecordatorioBusiness : IRecordatorioBusiness
         _grupoRepository = grupoRepository;
     }
 
-    public async Task<Response<RecordatorioInsertDTO>> CreateRecordatorio(long idUsuario, RecordatorioInsertDTO insertDTO)
+    public async Task<Response<RecordatorioDTO>> CreateRecordatorio(long idUsuario, RecordatorioInsertDTO insertDTO)
     {
         var result  = await _recordatorioRepository.CreateRecordatorioAsync(idUsuario, insertDTO);
 
@@ -24,10 +24,10 @@ public class RecordatorioBusiness : IRecordatorioBusiness
                 "El usuario no existe!",
                 "No se pudo crear un recordatorio"
             };
-            return new Response<RecordatorioInsertDTO>(null, false, errors, ResponseMessage.NotFound);
+            return new Response<RecordatorioDTO>(null, false, errors, ResponseMessage.NotFound);
         }
 
-        return new Response<RecordatorioInsertDTO>(insertDTO);
+        return new Response<RecordatorioDTO>(result);
     }
 
     public async Task<Response<RecordatorioWithGroupDTO>> CreateRecordatorioInGroup(long idUsuario, long idGrupo, RecordatorioInsertDTO insertDTO)

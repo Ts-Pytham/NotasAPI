@@ -25,7 +25,7 @@ public class RecordatorioController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<RecordatorioInsertDTO>> CreateRecordatorio(long idUsuario, RecordatorioInsertDTO insertDTO)
+    public async Task<ActionResult<RecordatorioDTO>> CreateRecordatorio(long idUsuario, RecordatorioInsertDTO insertDTO)
     {
         var result = await _recordatorioBusiness.CreateRecordatorio(idUsuario, insertDTO);
         

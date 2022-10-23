@@ -6,7 +6,7 @@
         {
         }
 
-        public async Task<RecordatorioInsertDTO> CreateRecordatorioAsync(long idUsuario, RecordatorioInsertDTO insertDTO)
+        public async Task<RecordatorioDTO> CreateRecordatorioAsync(long idUsuario, RecordatorioInsertDTO insertDTO)
         {
             var existsUser = await Context.Set<Usuario>().Where(x => x.Id == idUsuario).AnyAsync();
 
@@ -19,7 +19,7 @@
 
             await SaveAsync();
 
-            return insertDTO;
+            return recordatorio.MapToRecordatorioDTO();
         }
 
         public async Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(long idUsuario, GrupoDTO grupo, RecordatorioInsertDTO insertDTO)

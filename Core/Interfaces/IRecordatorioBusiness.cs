@@ -4,7 +4,7 @@ namespace NotasAPI.Core.Interfaces;
 
 public interface IRecordatorioBusiness
 {
-    Task<Response<RecordatorioInsertDTO>> CreateRecordatorio(long idUsuario, RecordatorioInsertDTO insertDTO);
+    Task<Response<RecordatorioDTO>> CreateRecordatorio(long idUsuario, RecordatorioInsertDTO insertDTO);
 
     Task<Response<IEnumerable<RecordatorioDTO>>> GetAllRecordatorios(long idUsuario);
 
