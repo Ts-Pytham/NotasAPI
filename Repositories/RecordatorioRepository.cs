@@ -8,9 +8,9 @@
 
         public async Task<RecordatorioDTO> CreateRecordatorioAsync(long idUsuario, RecordatorioInsertDTO insertDTO)
         {
-            var existsUser = await Context.Set<Usuario>().Where(x => x.Id == idUsuario).AnyAsync();
+            var existsUser = await Context.Set<Usuario>().Where(x => x.Id == idUsuario).FirstOrDefaultAsync();
 
-            if (!existsUser)
+            if (existsUser is null)
                 return null;
 
             var recordatorio = insertDTO.MapToRecordatorio(idUsuario);
@@ -19,12 +19,13 @@
 
             await SaveAsync();
 
-            return recordatorio.MapToRecordatorioDTO();
+            return recordatorio.MapToRecordatorioDTO($"{existsUser.Nombre} (Estudiante)");
         }
 
-        public async Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(long idUsuario, GrupoDTO grupo, RecordatorioInsertDTO insertDTO)
+        public async Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(Usuario usuario, GrupoDTO grupo, RecordatorioInsertDTO insertDTO)
         {
-            var recordatorio = insertDTO.MapToRecordatorio(idUsuario);
+
+            var recordatorio = insertDTO.MapToRecordatorio(usuario.Id);
 
             await Context.AddAsync(recordatorio);
 
@@ -34,7 +35,7 @@
 
             await SaveAsync();
 
-            return gr.MapToRecordatorioWithGroupDTO(grupo, recordatorio.MapToRecordatorioDTO());
+            return gr.MapToRecordatorioWithGroupDTO(grupo, recordatorio.MapToRecordatorioDTO($"{usuario.Nombre} (Monitor)"));
 
         }
 
@@ -62,9 +63,12 @@
 
         public async Task<IEnumerable<RecordatorioDTO>> GetAllRecordatoriosAsync(long idUsuario)
         {
-            var recordatorios = (await GetEntitiesAsync(x => x.IdUsuario == idUsuario))
-                                .Select(x => x.MapToRecordatorioDTO());
-
+            var recordatorios = await Context.Set<Recordatorio>()
+                                             .Include(x => x.IdUsuarioNavigation)
+                                             .Include(x => x.IdUsuarioNavigation.IdRolNavigation)
+                                             .Where(x => x.IdUsuario == idUsuario)
+                                             .Select(x => x.MapToRecordatorioDTO($"{x.IdUsuarioNavigation.Nombre} ({x.IdUsuarioNavigation.IdRolNavigation.Nombre})"))
+                                             .ToListAsync();
             return recordatorios;
         }
 

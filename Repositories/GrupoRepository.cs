@@ -27,8 +27,9 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
     {
         var recordatoriosList = await Context.Set<GrupoConRecordatorio>()
                                              .Include(x => x.IdRecordatorioNavigation)
+                                             .Include(x => x.IdRecordatorioNavigation.IdUsuarioNavigation)
                                              .Where(x => x.IdGrupo == idGrupo)
-                                             .Select(x => x.IdRecordatorioNavigation.MapToRecordatorioDTO())
+                                             .Select(x => x.IdRecordatorioNavigation.MapToRecordatorioDTO($"{x.IdRecordatorioNavigation.IdUsuarioNavigation.Nombre} (Monitor)"))
                                              .ToListAsync();
 
         return recordatoriosList;
@@ -98,5 +99,47 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
                             .Where(x => x.IdUsuario == idUsuario)
                             .Select(x => x.IdGrupoNavigation.MapToGrupoDTO())
                             .ToListAsync();
+    }
+
+    /// <summary>
+    /// Comprueba si el usuario es monitor de ese grupo.
+    /// </summary>
+    /// <param name="idMonitor"></param>
+    /// <param name="idGrupo"></param>
+    /// <returns>un entero:
+    ///                 0 Si el usuario es monitor de ese grupo.
+    ///                 1 Si el monitor no pertecene al grupo.
+    ///                 2 Si el usuario no es monitor.
+    ///                 3 Si el grupo no existe.
+    ///                 4 Si no existe ni el grupo ni el monitor.</returns>
+    public async Task<int> CheckMonitorInGroup(long idMonitor, long idGrupo)
+    {
+        var monitor = await Context.Set<Usuario>()
+                            .Include(x => x.IdRolNavigation)
+                            .Where(x => x.Id == idMonitor && x.IdRolNavigation.Id == (int)RolEnum.Monitor)
+                            .AnyAsync();
+
+        var grupo = await Context.Set<Grupo>()
+                                 .Where(x => idGrupo == x.Id)
+                                 .AnyAsync();
+
+        if (!grupo && !monitor)
+            return 4;
+
+        if (!grupo)
+            return 3;
+
+        if (!monitor)
+            return 2;
+
+        var result = await Context.Set<Grupo>()
+                                  .Where(x => x.Id == idGrupo && idMonitor == x.IdMonitor)
+                                  .AnyAsync();
+
+        if (!result)
+            return 1;
+
+        return 0;
+                             
     }
 }

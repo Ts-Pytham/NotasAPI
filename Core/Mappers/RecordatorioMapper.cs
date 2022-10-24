@@ -16,7 +16,7 @@ public static class RecordatorioMapper
         return recordatorio;
     }
 
-    public static RecordatorioDTO MapToRecordatorioDTO(this Recordatorio recordatorio)
+    public static RecordatorioDTO MapToRecordatorioDTO(this Recordatorio recordatorio, string autor)
     {
         var recordatorioDto = new RecordatorioDTO
         {
@@ -24,7 +24,9 @@ public static class RecordatorioMapper
             Fecha = recordatorio.Fecha,
             Id = recordatorio.Id,
             Prioridad = recordatorio.Prioridad,
-            Titulo = recordatorio.Titulo
+            Titulo = recordatorio.Titulo,
+            Autor =  autor,
+            
         };
 
         return recordatorioDto;
@@ -35,7 +37,7 @@ public static class RecordatorioMapper
         var gr = new GrupoConRecordatorio
         {
             IdGrupo = idGrupo,
-            IdRecordatorio = recordatorio.Id,
+            IdRecordatorioNavigation = recordatorio,
         };
 
         return gr;

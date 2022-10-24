@@ -34,30 +34,29 @@ public class RecordatorioBusiness : IRecordatorioBusiness
     {
         try
         {
-            var existsMonitor = await _usuarioRepository.CheckMonitor(idUsuario);
-            var existsGroup = await _grupoRepository.GetByIdAsync(idGrupo);
+            var existsMonitor = await _grupoRepository.CheckMonitorInGroup(idUsuario, idGrupo);
 
-            if (existsGroup is null || !existsMonitor)
+
+            string[] errors = Array.Empty<string>();
+
+            errors = existsMonitor switch
             {
-                var errors = new string[]
-                {
-                    "No se pudo crear un recordatorio"
-                };
-
-                if (existsGroup is null)
-                {
-                    errors = errors.Append("El grupo no existe!").ToArray();
-                }
-
-                if (!existsMonitor)
-                {
-                    errors = errors.Append("Este monitor no existe!").ToArray();
-                }
-
+                1 => errors.Append("El monitor no pertecene al grupo!").ToArray(),
+                2 => errors.Append("El usuario no es monitor!").ToArray(),
+                3 => errors.Append("El grupo no existe!").ToArray(),
+                4 => errors.Append("No existe ni el grupo y el monitor!").ToArray(),
+                0 => default,
+                _ => throw new NotImplementedException()
+            };
+            if (existsMonitor != 0)
+            {
                 return new Response<RecordatorioWithGroupDTO>(null, false, errors, ResponseMessage.NotFound);
             }
 
-            var gr = await _recordatorioRepository.CreateRecordatorioInGroupAsync(idUsuario, existsGroup.MapToGrupoDTO(), insertDTO);
+            var monitor = await _usuarioRepository.GetByIdAsync(idUsuario);
+            var grupo = await _grupoRepository.GetByIdAsync(idGrupo);
+
+            var gr = await _recordatorioRepository.CreateRecordatorioInGroupAsync(monitor, grupo.MapToGrupoDTO(), insertDTO);
 
             return new Response<RecordatorioWithGroupDTO>(gr);
         }

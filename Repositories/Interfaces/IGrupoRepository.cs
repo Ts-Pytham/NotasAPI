@@ -19,4 +19,6 @@ public interface IGrupoRepository : IRepository<Grupo>
     public Task<bool> UserExistsAndUserInGroup(long idUsuario, long idGrupo);
 
     public Task<IEnumerable<GrupoDTO>> GetGroupsOfUsers(long idUsuario);
+
+    public Task<int> CheckMonitorInGroup(long idMonitor, long idGrupo);
 }
