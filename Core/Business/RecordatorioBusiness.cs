@@ -106,18 +106,8 @@ public class RecordatorioBusiness : IRecordatorioBusiness
     public async Task<Response<IEnumerable<RecordatorioDTO>>> GetAllRecordatorios(long idUsuario)
     {
         var recordatorios = await _recordatorioRepository.GetAllRecordatoriosAsync(idUsuario);
-
-        if (recordatorios.Any())
-        {
-            return new Response<IEnumerable<RecordatorioDTO>>(recordatorios);
-        }
-
-        var errors = new string[]
-        {
-            "No hay ningún recordatorio con este usuario"
-        };
-
-        return new Response<IEnumerable<RecordatorioDTO>>(null, false, errors, ResponseMessage.NotFound);
+        
+        return new Response<IEnumerable<RecordatorioDTO>>(recordatorios);
     }
 
     public async Task<Response<RecordatorioUpdateDTO>> UpdateRecordatorio(RecordatorioUpdateDTO updateDTO)

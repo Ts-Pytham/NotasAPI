@@ -63,12 +63,26 @@
 
         public async Task<IEnumerable<RecordatorioDTO>> GetAllRecordatoriosAsync(long idUsuario)
         {
+            /*
             var recordatorios = await Context.Set<Recordatorio>()
                                              .Include(x => x.IdUsuarioNavigation)
                                              .Include(x => x.IdUsuarioNavigation.IdRolNavigation)
                                              .Where(x => x.IdUsuario == idUsuario)
                                              .Select(x => x.MapToRecordatorioDTO($"{x.IdUsuarioNavigation.Nombre} ({x.IdUsuarioNavigation.IdRolNavigation.Nombre})"))
                                              .ToListAsync();
+
+            */
+            var recordatorios = await (
+                                from recordatorio in Context.Set<Recordatorio>()
+                                join usuario in Context.Set<Usuario>() on recordatorio.IdUsuario equals usuario.Id
+                                join rol in Context.Set<Rol>() on usuario.IdRol equals rol.Id  
+                                orderby recordatorio.Id
+                                where recordatorio.IdUsuario == idUsuario && !(
+                                                                                from GR in Context.Set<GrupoConRecordatorio>()
+                                                                                select GR.IdRecordatorio
+                                                                             ).Contains(recordatorio.Id)
+                                select recordatorio.MapToRecordatorioDTO($"{usuario.Nombre} ({rol.Nombre})")).ToListAsync();
+                                
             return recordatorios;
         }
 
