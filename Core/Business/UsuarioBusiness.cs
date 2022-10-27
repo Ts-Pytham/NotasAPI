@@ -1,12 +1,16 @@
-﻿namespace NotasAPI.Core.Business;
+﻿using NotasAPI.Core.Mappers;
+
+namespace NotasAPI.Core.Business;
 
 public class UsuarioBusiness : IUsuarioBusiness
 {
     private readonly IUsuarioRepository _usuarioRepository;
+    private readonly IRecordatorioRepository _recordatorioRepository;
 
-    public UsuarioBusiness(IUsuarioRepository usuarioRepository)
+    public UsuarioBusiness(IUsuarioRepository usuarioRepository, IRecordatorioRepository recordatorioRepository)
     {
         _usuarioRepository = usuarioRepository;
+        _recordatorioRepository = recordatorioRepository;
         
     }
 
@@ -52,7 +56,7 @@ public class UsuarioBusiness : IUsuarioBusiness
         }
     }
 
-    public async Task<Response<UsuarioDTO>> Login(UsuarioLoginDTO loginDTO)
+    public async Task<Response<UsuarioWithRecordatorioDTO>> Login(UsuarioLoginDTO loginDTO)
     {
         var user = await _usuarioRepository.LoginUsuarioAsync(loginDTO);
 
@@ -62,10 +66,11 @@ public class UsuarioBusiness : IUsuarioBusiness
             {
                 "El correo/código o contraseña son incorrectos!"
             };
-            return new Response<UsuarioDTO>(user, false, errors, ResponseMessage.NotFound);
+            return new Response<UsuarioWithRecordatorioDTO>(null, false, errors, ResponseMessage.NotFound);
         }
 
-        return new Response<UsuarioDTO>(user);
+        var recordatorios = await _recordatorioRepository.GetAllRecordatoriosAsync(user.Id);
+        return new Response<UsuarioWithRecordatorioDTO>(user.MapToUsuarioWithRecordatorioDTO(recordatorios));
     }
 
     public async Task<Response<IEnumerable<UsuarioDTO>>> GetAllUsuarios()

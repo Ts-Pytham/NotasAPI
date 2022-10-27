@@ -6,5 +6,5 @@ public interface IUsuarioRepository : IRepository<Usuario>
 
     Task<UsuarioDTO> LoginUsuarioAsync(UsuarioLoginDTO usuarioDTO);
 
-    public Task<bool> CheckMonitor(long idMonitor);
+    Task<bool> CheckMonitor(long idMonitor);
 }

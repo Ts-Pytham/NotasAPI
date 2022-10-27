@@ -66,4 +66,19 @@ public static class UsuarioMapper
 
         return g;
     }
+
+    public static UsuarioWithRecordatorioDTO MapToUsuarioWithRecordatorioDTO(this UsuarioDTO usuario, IEnumerable<RecordatorioDTO> recordatorios)
+    {
+        var usuarioWR = new UsuarioWithRecordatorioDTO
+        {
+            Codigo = usuario.Codigo,
+            Id = usuario.Id,
+            Correo = usuario.Correo,
+            Nombre = usuario.Nombre,
+            Recordatorios = recordatorios,
+            Rol = usuario.Rol
+        };
+
+        return usuarioWR;
+    }
 }

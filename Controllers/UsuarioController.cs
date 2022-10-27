@@ -27,7 +27,7 @@ public class UsuarioController : ControllerBase
 	}
 
     [HttpPost("login")]
-    public async Task<ActionResult<Response<UsuarioDTO>>> Login(UsuarioLoginDTO usuario)
+    public async Task<ActionResult<Response<UsuarioWithRecordatorioDTO>>> Login(UsuarioLoginDTO usuario)
     {
         var result = await _usuarioBusiness.Login(usuario);
 
