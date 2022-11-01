@@ -22,20 +22,34 @@
             return recordatorio.MapToRecordatorioDTO($"{existsUser.Nombre} (Estudiante)");
         }
 
-        public async Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(Usuario usuario, GrupoDTO grupo, RecordatorioInsertDTO insertDTO)
+        public async Task<IEnumerable<RecordatorioWithGroupDTO>> CreateRecordatorioInGroupsAsync(RecordatorioWithGroupsInsertDTO insert)
         {
+            long idMonitor = insert.IdMonitor;
 
-            var recordatorio = insertDTO.MapToRecordatorio(usuario.Id);
+            var list = new List<RecordatorioWithGroupDTO>();
+            var name = await Context.Set<Usuario>()
+                                    .Where(x => x.Id == idMonitor)
+                                    .Select(x => x.Nombre)
+                                    .FirstOrDefaultAsync();
+
+            var recordatorio = insert.Recordatorio.MapToRecordatorio(idMonitor);
 
             await Context.AddAsync(recordatorio);
 
-            var gr = recordatorio.MapToGrupoConRecordatorioDTO(grupo.Id);
+            foreach (var idGrupo in insert.IdGrupos)
+            {
+                var gr = recordatorio.MapToGrupoConRecordatorioDTO(idGrupo);
 
-            await Context.AddAsync(gr);
+                await Context.AddAsync(gr);
 
-            await SaveAsync();
+                await SaveAsync();
 
-            return gr.MapToRecordatorioWithGroupDTO(grupo, recordatorio.MapToRecordatorioDTO($"{usuario.Nombre} (Monitor)"));
+                list.Add(gr.MapToRecordatorioWithGroupDTO(idGrupo, recordatorio.MapToRecordatorioDTO($"{name} (Monitor)")));
+            }
+
+            
+
+            return list;
 
         }
 

@@ -1,6 +1,4 @@
-﻿using NotasAPI.Entities;
-
-namespace NotasAPI.Core.Interfaces;
+﻿namespace NotasAPI.Core.Interfaces;
 
 public interface IRecordatorioBusiness
 {
@@ -8,7 +6,7 @@ public interface IRecordatorioBusiness
 
     Task<Response<IEnumerable<RecordatorioDTO>>> GetAllRecordatorios(long idUsuario);
 
-    Task<Response<RecordatorioWithGroupDTO>> CreateRecordatorioInGroup(long idUsuario, long idGrupo, RecordatorioInsertDTO insertDTO);
+    Task<Response<IEnumerable<RecordatorioWithGroupDTO>>> CreateRecordatorioInGroups(RecordatorioWithGroupsInsertDTO insert);
 
     Task<Response<RecordatorioUpdateDTO>> UpdateRecordatorio(RecordatorioUpdateDTO updateDTO);
 

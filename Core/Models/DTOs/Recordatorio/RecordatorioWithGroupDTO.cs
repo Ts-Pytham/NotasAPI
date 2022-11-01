@@ -6,5 +6,5 @@ public class RecordatorioWithGroupDTO
 
     public RecordatorioDTO Recordatorio { get; set; }
 
-    public GrupoDTO GrupoDTO { get; set; }
+    public long IdGrupo { get; set; }
 }

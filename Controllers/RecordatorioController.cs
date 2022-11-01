@@ -1,4 +1,6 @@
-﻿namespace NotasAPI.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace NotasAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -37,10 +39,10 @@ public class RecordatorioController : ControllerBase
         return NotFound(result);
     }
 
-    [HttpPost("grupos/{idGrupo}/{idUsuario}")]
-    public async Task<ActionResult<Response<RecordatorioWithGroupDTO>>> CreateRecordatorioInGroup(long idGrupo, long idUsuario, RecordatorioInsertDTO insertDTO)
+    [HttpPost("grupos/")]
+    public async Task<ActionResult<Response<IEnumerable<RecordatorioWithGroupDTO>>>> CreateRecordatorioInGroup(RecordatorioWithGroupsInsertDTO insert)
     {
-        var result = await _recordatorioBusiness.CreateRecordatorioInGroup(idUsuario, idGrupo, insertDTO);
+        var result = await _recordatorioBusiness.CreateRecordatorioInGroups(insert);
 
         if (result.Succeeded)
         {

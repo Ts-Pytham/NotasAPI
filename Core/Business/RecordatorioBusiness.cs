@@ -30,35 +30,35 @@ public class RecordatorioBusiness : IRecordatorioBusiness
         return new Response<RecordatorioDTO>(result);
     }
 
-    public async Task<Response<RecordatorioWithGroupDTO>> CreateRecordatorioInGroup(long idUsuario, long idGrupo, RecordatorioInsertDTO insertDTO)
+    public async Task<Response<IEnumerable<RecordatorioWithGroupDTO>>> CreateRecordatorioInGroups(RecordatorioWithGroupsInsertDTO insert)
     {
         try
         {
-            var existsMonitor = await _grupoRepository.CheckMonitorInGroup(idUsuario, idGrupo);
-
-
-            string[] errors = Array.Empty<string>();
-
-            errors = existsMonitor switch
+            for (int i = 0; i != insert.IdGrupos.Length; ++i)
             {
-                1 => errors.Append("El monitor no pertecene al grupo!").ToArray(),
-                2 => errors.Append("El usuario no es monitor!").ToArray(),
-                3 => errors.Append("El grupo no existe!").ToArray(),
-                4 => errors.Append("No existe ni el grupo y el monitor!").ToArray(),
-                0 => default,
-                _ => throw new NotImplementedException()
-            };
-            if (existsMonitor != 0)
-            {
-                return new Response<RecordatorioWithGroupDTO>(null, false, errors, ResponseMessage.NotFound);
+                var existsMonitor = await _grupoRepository.CheckMonitorInGroup(insert.IdMonitor, insert.IdGrupos[i]);
+
+
+                string[] errors = Array.Empty<string>();
+
+                errors = existsMonitor switch
+                {
+                    1 => errors.Append("El monitor no pertecene al grupo!").ToArray(),
+                    2 => errors.Append("El usuario no es monitor!").ToArray(),
+                    3 => errors.Append("El grupo no existe!").ToArray(),
+                    4 => errors.Append("No existe ni el grupo y el monitor!").ToArray(),
+                    0 => default,
+                    _ => throw new NotImplementedException()
+                };
+                if (existsMonitor != 0)
+                {
+                    return new Response<IEnumerable<RecordatorioWithGroupDTO>>(null, false, errors, ResponseMessage.NotFound);
+                }
             }
 
-            var monitor = await _usuarioRepository.GetByIdAsync(idUsuario);
-            var grupo = await _grupoRepository.GetByIdAsync(idGrupo);
+            var gr = await _recordatorioRepository.CreateRecordatorioInGroupsAsync(insert);
 
-            var gr = await _recordatorioRepository.CreateRecordatorioInGroupAsync(monitor, grupo.MapToGrupoDTO(), insertDTO);
-
-            return new Response<RecordatorioWithGroupDTO>(gr);
+            return new Response<IEnumerable<RecordatorioWithGroupDTO>>(gr);
         }
         catch(Exception e)
         {
@@ -68,7 +68,7 @@ public class RecordatorioBusiness : IRecordatorioBusiness
                 "No se pudo crear un recordatorio"
             };
 
-            return new Response<RecordatorioWithGroupDTO>(null, false, errors, ResponseMessage.UnexpectedErrors);
+            return new Response<IEnumerable<RecordatorioWithGroupDTO>>(null, false, errors, ResponseMessage.UnexpectedErrors);
         }
     }
 

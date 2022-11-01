@@ -4,7 +4,7 @@ public interface IRecordatorioRepository : IRepository<Recordatorio>
 {
     Task<RecordatorioDTO> CreateRecordatorioAsync(long idUsuario, RecordatorioInsertDTO insertDTO);
 
-    Task<RecordatorioWithGroupDTO> CreateRecordatorioInGroupAsync(Usuario usuario, GrupoDTO grupo, RecordatorioInsertDTO insertDTO);
+    Task<IEnumerable<RecordatorioWithGroupDTO>> CreateRecordatorioInGroupsAsync(RecordatorioWithGroupsInsertDTO insert);
 
     Task<RecordatorioUpdateDTO> UpdateRecordatorioAsync(RecordatorioUpdateDTO updateDTO);
 
