@@ -1,4 +1,6 @@
-﻿namespace NotasAPI.Repositories
+﻿using NotasAPI.Entities;
+
+namespace NotasAPI.Repositories
 {
     public class RecordatorioRepository : Repository<Recordatorio>, IRecordatorioRepository
     {
@@ -86,17 +88,25 @@
                                              .ToListAsync();
 
             */
-            var recordatorios = await (
-                                from recordatorio in Context.Set<Recordatorio>()
-                                join usuario in Context.Set<Usuario>() on recordatorio.IdUsuario equals usuario.Id
-                                join rol in Context.Set<Rol>() on usuario.IdRol equals rol.Id  
-                                orderby recordatorio.Id
-                                where recordatorio.IdUsuario == idUsuario && !(
-                                                                                from GR in Context.Set<GrupoConRecordatorio>()
-                                                                                select GR.IdRecordatorio
-                                                                             ).Contains(recordatorio.Id)
-                                select recordatorio.MapToRecordatorioDTO($"{usuario.Nombre} ({rol.Nombre})")).ToListAsync();
-                                
+
+            var recordatorios1 = await (from recordatorio in Context.Set<Recordatorio>()
+                                        join usuario in Context.Set<Usuario>() on recordatorio.IdUsuario equals usuario.Id
+                                        join rol in Context.Set<Rol>() on usuario.IdRol equals rol.Id
+                                        orderby recordatorio.Id
+                                        where recordatorio.IdUsuario == idUsuario
+                                        select recordatorio.MapToRecordatorioDTO($"{usuario.Nombre} ({rol.Nombre})")).ToListAsync();
+
+            var recordatorios2 = await  (from recordatorio in Context.Set<Recordatorio>()
+                                         join GR in Context.Set<GrupoConRecordatorio>() on recordatorio.Id equals GR.IdRecordatorio
+                                         join GU in Context.Set<GrupoConUsuario>() on GR.IdGrupo equals GU.IdGrupo
+                                         join usuario in Context.Set<Usuario>() on GU.IdUsuario equals usuario.Id
+                                         join rol in Context.Set<Rol>() on usuario.IdRol equals rol.Id
+                                         orderby recordatorio.Id
+                                         where GU.IdUsuario == idUsuario
+                                         select recordatorio.MapToRecordatorioDTO($"{usuario.Nombre} ({rol.Nombre})")).ToListAsync();
+
+            var recordatorios = recordatorios1.Union(recordatorios2).OrderBy(x => x.Id).DistinctBy(x => x.Id);
+
             return recordatorios;
         }
 
