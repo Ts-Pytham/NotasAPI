@@ -103,7 +103,7 @@ namespace NotasAPI.Repositories
                                          join rol in Context.Set<Rol>() on usuario.IdRol equals rol.Id
                                          orderby recordatorio.Id
                                          where GU.IdUsuario == idUsuario
-                                         select recordatorio.MapToRecordatorioDTO($"{usuario.Nombre} ({rol.Nombre})")).ToListAsync();
+                                         select recordatorio.MapToRecordatorioDTO($"{recordatorio.IdUsuarioNavigation.Nombre} ({recordatorio.IdUsuarioNavigation.IdRolNavigation.Nombre})")).ToListAsync();
 
             var recordatorios = recordatorios1.Union(recordatorios2).OrderBy(x => x.Id).DistinctBy(x => x.Id);
 
