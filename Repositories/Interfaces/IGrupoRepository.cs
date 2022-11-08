@@ -10,13 +10,17 @@ public interface IGrupoRepository : IRepository<Grupo>
 
     public Task<GrupoWithUserDTO> InsertToGrupoAsync(GrupoDTO grupo, Usuario usuario);
 
+    public Task LeaveGroup(GrupoConUsuario Usuario);
+
     public Task<bool> GrupoExists(int codigo);
 
     public Task<Grupo> GrupoExistsWithGrupo(int codigo);
 
     public Task AddUsersInGroupAsync(long idGrupo, IEnumerable<UsuarioDTO> usuarios);
 
-    public Task<bool> UserExistsAndUserInGroup(long idUsuario, long idGrupo);
+    public Task<bool> UserExistsInGroup(long idUsuario, long idGrupo);
+
+    public Task<GrupoConUsuario> GetGroupWithUser(long idGrupo, long idUsuario);
 
     public Task<IEnumerable<GrupoDTO>> GetGroupsOfUsers(long idUsuario);
 

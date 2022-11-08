@@ -23,7 +23,7 @@ public class GrupoBusiness : IGrupoBusiness
             }
             foreach (var usuario in usuarios)
             {
-                if (await _grupoRepository.UserExistsAndUserInGroup(usuario.Id, idGrupo))
+                if (await _grupoRepository.UserExistsInGroup(usuario.Id, idGrupo))
                 {
                     var errors = new string[]
                     {
@@ -247,6 +247,52 @@ public class GrupoBusiness : IGrupoBusiness
             };
           
             return new Response<GrupoWithUserDTO>(null, false, errors, ResponseMessage.UnexpectedErrors);
+        }
+    }
+
+    public async Task<Response<UsuarioDTO>> LeaveGroup(long idGrupo, long idUsuario)
+    {
+        try
+        {
+            var existsUser = await _usuarioRepository.GetByIdAsync(idUsuario);
+            var existsGroup = await _grupoRepository.GetByIdAsync(idGrupo);
+
+            string[] errors =
+            {
+                "No se ha podido eliminar al usuario del grupo",
+            };
+
+            if (existsGroup is null || existsGroup is null)
+            {
+
+                if(existsUser is null)
+                {
+                    errors = errors.Append("El usuario no existe!").ToArray();
+                }
+
+                if(existsGroup is null)
+                {
+                    errors = errors.Append("El grupo no existe!").ToArray();
+                }
+
+                return new Response<UsuarioDTO>(null, false, errors, ResponseMessage.NotFound);
+            }
+
+            var groupWithUser = await _grupoRepository.GetGroupWithUser(idGrupo, idUsuario);
+            if (groupWithUser is null)
+            {
+                errors = errors.Append("El usuario no está en este grupo!").ToArray();
+
+                return new Response<UsuarioDTO>(null, false, errors, ResponseMessage.NotFound);
+            }
+
+            await _grupoRepository.LeaveGroup(groupWithUser);
+
+            return new Response<UsuarioDTO>(existsUser.MapToUsuarioDTO());
+        }
+        catch(Exception e)
+        {
+            return new Response<UsuarioDTO>(null, false, new string[] { e.Message }, ResponseMessage.UnexpectedErrors);
         }
     }
 }

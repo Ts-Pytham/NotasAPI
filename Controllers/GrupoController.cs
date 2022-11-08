@@ -1,4 +1,5 @@
-﻿using NotasAPI.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using NotasAPI.Entities;
 
 namespace NotasAPI.Controllers;
 
@@ -135,5 +136,23 @@ public class GrupoController : ControllerBase
 
         return BadRequest(result);
         
+    }
+
+    [HttpDelete("{idGrupo}/usuarios/{idUsuario}")]
+    public async Task<ActionResult<Response<UsuarioDTO>>> LeaveGroup(long idGrupo, long idUsuario)
+    {
+        var result = await _grupoBusiness.LeaveGroup(idGrupo, idUsuario);
+
+        if (result.Succeeded)
+        {
+            return Ok(result);
+        }
+
+        if(result.Message == ResponseMessage.NotFound)
+        {
+            return NotFound(result);
+        }
+
+        return BadRequest(result);
     }
 }

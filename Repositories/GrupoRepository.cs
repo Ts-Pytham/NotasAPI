@@ -85,11 +85,18 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
         await SaveAsync();
     }
 
-    public async Task<bool> UserExistsAndUserInGroup(long idUsuario, long idGrupo)
+    public async Task<bool> UserExistsInGroup(long idUsuario, long idGrupo)
     {
         return await Context.Set<GrupoConUsuario>()
-                            .Where(x => x.Id == idUsuario && x.IdGrupo == idGrupo)
+                            .Where(x => x.IdUsuario == idUsuario && x.IdGrupo == idGrupo)
                             .AnyAsync();
+    }
+
+    public async Task<GrupoConUsuario> GetGroupWithUser(long idGrupo, long idUsuario)
+    {
+        return await Context.Set<GrupoConUsuario>()
+                            .Where(x => x.IdUsuario == idUsuario && x.IdGrupo == idGrupo)
+                            .FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<GrupoDTO>> GetGroupsOfUsers(long idUsuario)
@@ -142,4 +149,11 @@ public class GrupoRepository : Repository<Grupo>, IGrupoRepository
         return 0;
                              
     }
+
+    public async Task LeaveGroup(GrupoConUsuario usuario)
+    {
+        Context.Remove(usuario);
+        await SaveAsync();
+    }
+
 }
