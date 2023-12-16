@@ -213,13 +213,14 @@ public class GrupoBusiness : IGrupoBusiness
         {
             var grupo = await _grupoRepository.GrupoExistsWithGrupo(idCodigo);
             var usuario = await _usuarioRepository.GetByIdAsync(idUsuario);
+
+            var errors = new string[]
+            {
+                "No se ha podido recuperar los usuarios",
+            };
+
             if (grupo is null || usuario is null)
             {
-                var errors = new string[]
-                {
-                    "No se ha podido recuperar los usuarios",
-                };
-
                 if(grupo is null)
                 {
                     errors = errors.Append("Este grupo no existe!").ToArray();
@@ -230,8 +231,14 @@ public class GrupoBusiness : IGrupoBusiness
                     errors = errors.Append("Este usuario no existe!").ToArray();
                 }
 
-
                 return new Response<GrupoWithUserDTO>(null, false, errors, ResponseMessage.NotFound);
+            }
+
+            if (await _grupoRepository.UserExistsInGroup(idUsuario, grupo.Id))
+            {
+                errors = errors.Append("Este usuario ya se encuentra en este grupo!").ToArray();
+
+                return new Response<GrupoWithUserDTO>(null, false, errors, ResponseMessage.ValidationErrors);
             }
 
             var g = await _grupoRepository.InsertToGrupoAsync(grupo.MapToGrupoDTO(), usuario);

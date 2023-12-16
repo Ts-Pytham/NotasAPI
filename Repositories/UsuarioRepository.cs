@@ -20,7 +20,6 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
 
         var existsUser = await Context.Set<Usuario>()
-                                          .Include(x => x.IdRolNavigation)
                                           .Where(x => x.Correo == usuarioDTO.Name || x.Codigo == usuarioDTO.Name.ToInt32())
                                           .FirstOrDefaultAsync();
 
